@@ -41,18 +41,18 @@
             <div class="inputs">
                 <div class="input-group">
                     <label" for="">From</label>
-                    <input class="inp-style" type="text" name="" placeholder="Dhaka">
+                    <input id="from-location" class="inp-style" type="text" name="" value="Dhaka">
                 </div>
                 <div class="input-group">
                     <label" for="">From</label>
-                    <input class="inp-style" type="text" name="" placeholder="Chittagone">
+                    <input  id="to-location" class="inp-style" type="text" name="" value="Chittagong">
                 </div>
             </div>
 
             <div class="inputs">
                 <div class="input-group">
                     <label" for="">Departure</label>
-                    <input class="inp-style" type="date" name="">
+                    <input id="from-date" class="inp-style" type="date" name="" >
                 </div>
                 <div class="input-group">
                     <label for="">Return</label>
@@ -63,7 +63,7 @@
                 <div class="input-group f-class">
                 <div>
                     <label for="">First Class ($150)</label>
-                    <input id="first-class-count" class="inp-style inp-width" type="number" name="" value="0">
+                    <input id="first-class-count" onchange="handleInputChange('first-class')" class="inp-style inp-width" type="number" name="" value="0">
                 </div>
                 <div class="plus-minus-btn">
                     <p><span  onclick="handleTicketClick('first-class',true)">+</span> 
@@ -73,7 +73,7 @@
                 <div class="input-group f-class">
                     <div>
                         <label for="">Economy ($100)</label>
-                        <input id="economy-count" class="inp-style inp-width" type="number" name="" value="0">
+                        <input id="economy-count"  onchange="handleInputChange('economy')" class="inp-style inp-width" type="number" name="" value="0">
                     </div>
                     <div class="plus-minus-btn">
                         <p><span  onclick="handleTicketClick('economy',true)">+</span> 
@@ -110,11 +110,12 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-style">Book Now</button>
+            <button onclick="showBookingSummary()" class="btn-style">Book Now</button>
         </div>
     </main>
 
     <script>
+        document.getElementById('from-date').value = new Date().toISOString().substring(0, 10);
         function handleTicketClick(ticketType,isIncrease){
             const ticketInput=document.getElementById(ticketType+"-count");
             const ticketCount=parseInt(ticketInput.value);
@@ -130,16 +131,35 @@
             {
                 ticketNewCount=ticketCount-1;
             }        
-            //console.log(ticketNewCount);    
             ticketInput.value=ticketNewCount;
             var firstClassPrice=calculatePrice("first-class",150);
             var economyPrice=calculatePrice("economy",100);
             var subTotal=firstClassPrice+economyPrice;
             document.getElementById("sub-total").innerText="$"+subTotal;
+            document.getElementById("vat").innerText="$"+(subTotal*0.1);
+            document.getElementById("total").innerText="$"+(subTotal+(subTotal*0.1));
+        }
+        function handleInputChange(ticketType){
+            var firstClassPrice=calculatePrice("first-class",150);
+            var economyPrice=calculatePrice("economy",100);
+            var subTotal=firstClassPrice+economyPrice;
+            document.getElementById("sub-total").innerText="$"+subTotal;
+            document.getElementById("vat").innerText="$"+(subTotal*0.1);
+            document.getElementById("total").innerText="$"+(subTotal+(subTotal*0.1));
         }
         function calculatePrice(ticketType,unitPrice){
             const ticketInput= document.getElementById(ticketType+"-count");
             return parseInt(ticketInput.value)*unitPrice;
+        }
+        function showBookingSummary(){
+            var messege="Congrasulations! your booking saved successfully";
+            messege+="\nFrom : "+document.getElementById("from-location").value;
+            messege+="\nTo : "+document.getElementById("to-location").value;
+            messege+="\nJourney Date : "+document.getElementById("from-date").value;
+            messege+="\nTotal Cost : "+document.getElementById("total").innerText;
+            if(confirm("Are you sure to confirm?")) {
+                alert(messege);
+            } 
         }
     </script>
     <!--Thank You-->
