@@ -114,32 +114,32 @@
         </div>
     </main>
 
-    <script>
+    <script>        
+        
         document.getElementById('from-date').value = new Date().toISOString().substring(0, 10);
+
         function handleTicketClick(ticketType,isIncrease){
             const ticketInput=document.getElementById(ticketType+"-count");
             const ticketCount=parseInt(ticketInput.value);
             let ticketNewCount=ticketCount;
             console.log(document.getElementById(ticketType+"-count"));
             if(isIncrease==true)
-            {
-                
-                ticketNewCount=ticketCount+1;
-                
+            {                
+                ticketNewCount=ticketCount+1;                
             }
             else if(isIncrease==false && ticketCount>0)
             {
                 ticketNewCount=ticketCount-1;
             }        
             ticketInput.value=ticketNewCount;
-            var firstClassPrice=calculatePrice("first-class",150);
-            var economyPrice=calculatePrice("economy",100);
-            var subTotal=firstClassPrice+economyPrice;
-            document.getElementById("sub-total").innerText="$"+subTotal;
-            document.getElementById("vat").innerText="$"+(subTotal*0.1);
-            document.getElementById("total").innerText="$"+(subTotal+(subTotal*0.1));
+            setPice();      
         }
+
         function handleInputChange(ticketType){
+            setPice();            
+        }
+
+        function setPice(){
             var firstClassPrice=calculatePrice("first-class",150);
             var economyPrice=calculatePrice("economy",100);
             var subTotal=firstClassPrice+economyPrice;
@@ -147,16 +147,22 @@
             document.getElementById("vat").innerText="$"+(subTotal*0.1);
             document.getElementById("total").innerText="$"+(subTotal+(subTotal*0.1));
         }
+
         function calculatePrice(ticketType,unitPrice){
             const ticketInput= document.getElementById(ticketType+"-count");
             return parseInt(ticketInput.value)*unitPrice;
         }
+
         function showBookingSummary(){
             var messege="Congrasulations! your booking saved successfully";
+            messege+="\n\nSummary";
+            messege+="\n--------------------------------";
             messege+="\nFrom : "+document.getElementById("from-location").value;
             messege+="\nTo : "+document.getElementById("to-location").value;
             messege+="\nJourney Date : "+document.getElementById("from-date").value;
             messege+="\nTotal Cost : "+document.getElementById("total").innerText;
+            messege+="\n--------------------------------";
+            messege+="\nHave a safe journey.";
             if(confirm("Are you sure to confirm?")) {
                 alert(messege);
             } 
